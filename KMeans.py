@@ -36,13 +36,15 @@ class KMeans:
             
             self.centroids = new_centroids
     
-    def plot (self, X):
-        plt.scatter(X[:,0], X[:,1])
-        plt.scatter(self.centroids[:,0], self.centroids[:,1], c='r')
-        plt.show()
         
     def predict(self, X):
         return self.assign(X)
     
     def normalize(self, X):
         return (X - X.mean(axis=0)) / X.std(axis=0)
+    
+    def distance(self, X):
+        distance = np.sqrt(((X - self.centroids[:, np.newaxis])**2).sum(axis=2))
+        #add every distance of each cluster
+        return distance.sum(axis=0).sum(axis=0)
+    
