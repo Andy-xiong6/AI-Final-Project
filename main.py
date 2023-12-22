@@ -19,21 +19,21 @@ def precision(X):
     print("cluster 2: ", precision_cluster2)
     print("cluster 3: ", precision_cluster3)
     
-# KMeans algorithm
-kmeans = KMeans(3, 1000)
+# KMeans algorithm 
+kmeans = KMeans(3, 10)
 X_norm = kmeans.normalize(X)
 kmeans.train(X)
 print(kmeans.predict(X))
 print("precision: ")
 precision(kmeans.predict(X))
-print("distance: ", kmeans.distance(X))
 
 print("Soft Kmeans with k = 3: ")
 # SoftKMeans algorithm
-softkmeans = SoftKMeans(3, 1000, 0.2)
+softkmeans = SoftKMeans(3, 10, 10)
 softkmeans.train(X)
 print(softkmeans.predict(X))
 print("precision: ")
 precision(softkmeans.predict(X))
+print("J: ", softkmeans.J(X))
 
 

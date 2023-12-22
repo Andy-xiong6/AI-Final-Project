@@ -5,12 +5,11 @@ class KMeans:
     def __init__(self, k, iter):
         self.k = k
         self.iter = iter
-        self.centroids = None # size: (k, features)
         
     def assign(self, X):
         # X size: (1, features)
         # centroids size: (k, features)
-        distance = np.sqrt(((X - self.centroids[:, np.newaxis])**2).sum(axis=2)) # sum
+        distance = ((X - self.centroids[:, np.newaxis])**2).sum(axis=2) 
         return np.argmin(distance, axis=0) 
     
     def update(self, X, labels):
@@ -30,12 +29,15 @@ class KMeans:
         for i in range(self.iter):
             labels = self.assign(X)
             new_centroids = self.update(X, labels)
-            
+            #caculate the distance of each point to its centroid
+            distance = ((X - self.centroids[:, np.newaxis])**2).sum(axis=2)
+            J = np.sum(np.min(distance, axis=0))
+            print("iter: ", i)
+            print("J: ", J)
             if (self.centroids == new_centroids).all():
                 break
             
             self.centroids = new_centroids
-    
         
     def predict(self, X):
         return self.assign(X)
@@ -43,8 +45,4 @@ class KMeans:
     def normalize(self, X):
         return (X - X.mean(axis=0)) / X.std(axis=0)
     
-    def distance(self, X):
-        distance = np.sqrt(((X - self.centroids[:, np.newaxis])**2).sum(axis=2))
-        #add every distance of each cluster
-        return distance.sum(axis=0).sum(axis=0)
     

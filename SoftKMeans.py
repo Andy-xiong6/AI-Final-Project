@@ -5,13 +5,12 @@ class SoftKMeans:
         self.k = k
         self.iter = iter
         self.beta = beta
-        self.centroids = None  # size: (k, features)
-        self.weights = None  # size: (k, samples)
 
     def assign(self, X):
         distance = np.sqrt(((X[:, np.newaxis] - self.centroids) ** 2).sum(axis=2))
         weights = np.exp(-self.beta * distance ** 2)
         weights /= weights.sum(axis=1)[:, np.newaxis]
+        self.weights = weights
         return weights
 
     def update(self, X, weights):
@@ -44,3 +43,10 @@ class SoftKMeans:
 
     def normalize(self, X):
         return (X - X.mean(axis=0)) / X.std(axis=0)
+    
+    def J(self, X):
+        # caculate the distance of each point to every centroid
+        distance = ((X[:, np.newaxis] - self.centroids) ** 2).sum(axis=2) # size: (samples, k)
+        distance = distance * self.weights # size: (samples, k)
+        J = np.sum(distance) # size: (1)
+        return J
