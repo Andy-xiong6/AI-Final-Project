@@ -1,6 +1,8 @@
 import numpy as np
+from PIL import Image
 from KMeans import KMeans
 from SoftKMeans import SoftKMeans
+from PCA import PCA
     
 # Load data
 dataset = np.loadtxt('seeds_dataset.txt')
@@ -35,5 +37,14 @@ print(softkmeans.predict(X))
 print("precision: ")
 precision(softkmeans.predict(X))
 print("J: ", softkmeans.J(X))
+
+# PCA algorithm
+print("PCA with k = 3: ")
+pca = PCA(3)
+pca.train(X)
+print("Normalized data: ", pca.normalize(X))
+print("recover: ", pca.recover(pca.predict(X)))
+print("J: ", pca.J(X))
+
 
 
